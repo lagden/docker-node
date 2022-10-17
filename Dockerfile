@@ -17,5 +17,5 @@ RUN ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 # Clear apk cache
 RUN rm -rf /var/cache/apk/*
 
-ARG NODE_ENV="production"
-ARG BASE="/home/node"
+# pnpm
+RUN npm i -g pnpm
