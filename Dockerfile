@@ -1,4 +1,4 @@
-FROM node:18.11-alpine3.15
+FROM node:18.12-alpine3.15
 LABEL maintainer="lagden@gmail.com"
 
 # If Docker Host is Mac or Windows (deprecated - `node --watch`)
