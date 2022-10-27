@@ -19,10 +19,6 @@ EOF
 exit 0
 }
 
-# Go to current directory
-CURR_FOLDER="$(pwd)"
-cd $CURR_FOLDER
-
 unset OPT
 OPT="staging"
 
@@ -40,6 +36,11 @@ done
 
 # Check option available
 [[ ! " ${OPT_AVAILABLE[*]} " =~ " ${OPT} " ]] && usage
+
+# Go to current directory
+unset CURR_FOLDER
+CURR_FOLDER="$(pwd)"
+cd $CURR_FOLDER
 
 # ENV File
 load_env $OPT
