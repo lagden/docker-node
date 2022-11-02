@@ -1,9 +1,9 @@
-FROM node:18.11-alpine3.15 as main
+FROM node:18.12-alpine3.16 as main
 LABEL maintainer="lagden@gmail.com"
 
 # If Docker Host is Mac or Windows (deprecated - `node --watch`)
 ENV ENTR_INOTIFY_WORKAROUND=1
-COPY --from=lagden/entr:5.2-alpine3.15 /usr/local/bin/entr /usr/local/bin/.
+COPY --from=lagden/entr:5.2-alpine3.16 /usr/local/bin/entr /usr/local/bin/.
 
 # Shared libraries
 RUN apk add --no-cache --update libc6-compat
@@ -17,5 +17,8 @@ RUN ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 # Clear apk cache
 RUN rm -rf /var/cache/apk/*
 
-# pnpm
+# Update npm
+RUN npm i -g npm
+
+# Install pnpm
 RUN npm i -g pnpm
