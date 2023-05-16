@@ -12,18 +12,22 @@ usage() {
   Usage: $0 [options...]
 
   Options:
-    -e <qa|staging|production>  Environment
-    -h                          Show usage
+    -e <staging|production>  Environment
+    -h                       Show usage
 
 EOF
 exit 0
 }
 
+# Go to current directory
+CURR_FOLDER="$(pwd)"
+cd $CURR_FOLDER
+
 unset OPT
 OPT="staging"
 
 unset OPT_AVAILABLE
-OPT_AVAILABLE=("qa" "staging" "production")
+OPT_AVAILABLE=("staging" "production")
 
 while getopts "e:h" o
 do
@@ -37,11 +41,6 @@ done
 # Check option available
 [[ ! " ${OPT_AVAILABLE[*]} " =~ " ${OPT} " ]] && usage
 
-# Go to current directory
-unset CURR_FOLDER
-CURR_FOLDER="$(pwd)"
-cd $CURR_FOLDER
-
 # ENV File
 load_env $OPT
 
@@ -51,15 +50,13 @@ if test "${REQUIRE_GEN:-0}" = "1"; then
 fi
 
 # Variables
-REGISTRY_USER="$(cat ${CURR_FOLDER}/.registry-user)"
-REGISTRY_PASSWD="$(cat ${CURR_FOLDER}/.registry-passwd)"
 TAG_IMAGE="${REGISTRY}/${IMAGE}:${VERSION}"
 TAG_IMAGE_LATEST="${REGISTRY}/${IMAGE}:latest"
 DOCKER_TARGET_BUILD="${DOCKER_TARGET_BUILD:-main}"
 
 # Build
 docker build \
-	--build-arg NODE_ENV=${NODE_ENV} \
+	--build-arg TZ=${TZ} \
 	--target $DOCKER_TARGET_BUILD \
 	--compress \
 	--force-rm \
@@ -72,18 +69,16 @@ test $? -ne 0 && abort "Falha no build da image --> ${TAG_IMAGE}" || ok "Build i
 
 # Push (Send image to Registry)
 if test "${REGISTRY_GOOGLE_CLOUD:-0}" = "0"; then
+	REGISTRY_USER="$(cat ${CURR_FOLDER}/.registry-user)"
 	cat ${CURR_FOLDER}/.registry-passwd | docker login $REGISTRY --username $REGISTRY_USER --password-stdin
 fi
+
+docker push $TAG_IMAGE
 
 if test "${OPT}" = "production"; then
 	docker push $TAG_IMAGE_LATEST
 fi
 
-docker push $TAG_IMAGE
-
-# # Cleanup
-# docker rmi $(docker images -q -f "dangling=true" -f "label=autodelete=true")
-
-ok "Build finalizado... Yeahh!!!"
+ok "Image build accomplished... Yeahh!!!"
 
 exit 0

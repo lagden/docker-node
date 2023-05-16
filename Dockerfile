@@ -1,9 +1,7 @@
-FROM node:18.12-alpine3.16 as main
+FROM node:18.16-alpine3.17 as main
 LABEL maintainer="lagden@gmail.com"
 
-# If Docker Host is Mac or Windows (deprecated - `node --watch`)
-ENV ENTR_INOTIFY_WORKAROUND=1
-COPY --from=lagden/entr:5.2-alpine3.16 /usr/local/bin/entr /usr/local/bin/.
+ARG TZ=America/Sao_Paulo
 
 # Shared libraries
 RUN apk add --no-cache --update libc6-compat
@@ -11,7 +9,7 @@ RUN ln -s /lib64/ld-linux-x86-64.so.2 /lib/ld-linux-x86-64.so.2
 
 # Timezone
 RUN apk add --no-cache --update tzdata
-ENV TZ=America/Sao_Paulo
+ENV TZ=$TZ
 RUN ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Clear apk cache
