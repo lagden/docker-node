@@ -14,9 +14,3 @@ RUN ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Clear apk cache
 RUN rm -rf /var/cache/apk/*
-
-# Update npm
-RUN npm i -g npm
-
-# Install pnpm
-RUN npm i -g pnpm
