@@ -3,4 +3,4 @@ ENV_BASE_DIRNAME="$(cd $(dirname ${BASH_SOURCE:-$0}) && pwd)"
 
 # ----------
 
-VERSION=18.16-alpine3.17
+VERSION=lts-alpine

@@ -2,7 +2,7 @@
 
 [![Docker Release][dockerelease-img]][dockerelease]
 
-[dockerelease-img]:    https://img.shields.io/docker/v/lagden/node/18.16-alpine3.17
+[dockerelease-img]:    https://img.shields.io/docker/v/lagden/node/lts-alpine
 [dockerelease]:        https://hub.docker.com/r/lagden/node
 
 

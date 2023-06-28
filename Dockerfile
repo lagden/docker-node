@@ -1,4 +1,4 @@
-FROM node:18.16-alpine3.17 as main
+FROM node:lts-alpine as main
 LABEL maintainer="lagden@gmail.com"
 
 ARG TZ=America/Sao_Paulo
