@@ -2,6 +2,8 @@ REGISTRY_GOOGLE_CLOUD=0
 REGISTRY=docker.io
 IMAGE=lagden/node
 
+TZ=America/Sao_Paulo
+
 DOCKER_TARGET_BUILD=main
 
 VERSION=base
